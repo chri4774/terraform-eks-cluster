@@ -1,5 +1,5 @@
 resource "aws_iam_role" "demo-node" {
-  name = var.cluster-name
+  name = "${var.cluster-name}-demo-node"
 
   assume_role_policy = <<POLICY
 {
