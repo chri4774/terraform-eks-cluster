@@ -25,10 +25,10 @@ users:
       args:
         - "token"
         - "-i"
-        - "${var.cluster-name}"
+        - ${var.cluster-name}
 KUBECONFIG
 }
 
 output "kubeconfig" {
-  value = "${local.kubeconfig}"
+  value = local.kubeconfig
 }

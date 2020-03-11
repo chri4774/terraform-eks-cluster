@@ -1,6 +1,6 @@
 variable "cluster-name" {
-  default = "terraform-eks-demo"
-  type    = "string"
+  default = "cs-terraform-eks-demo"
+  type    = string
 }
 
 variable "key_name" {
@@ -12,11 +12,15 @@ variable "ssh_public_key" {
 }
 
 variable "aws_profile" {
-  default = "eks"
+  default     = "eks"
   description = "configure AWS CLI profile"
 }
 
 variable "region" {
-   description = "Enter region you want to create EKS cluster in"
-   default = "eu-central-1"
+  description = "Enter region you want to create EKS cluster in"
+  default     = "eu-central-1"
+}
+
+variable "availability_zone_count" {
+  default = 3
 }
