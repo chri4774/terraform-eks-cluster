@@ -8,7 +8,7 @@ variable "key_name" {
 }
 
 variable "ssh_public_key" {
-  default = "C:/Users/Chri/.ssh/id_rsa.pub"
+  default = "~/.ssh/id_rsa.pub"
 }
 
 variable "aws_profile" {
@@ -18,5 +18,5 @@ variable "aws_profile" {
 
 variable "region" {
    description = "Enter region you want to create EKS cluster in"
-   default = "eu-west-1"
+   default = "eu-central-1"
 }

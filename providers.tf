@@ -2,10 +2,12 @@
 # Provider Configuration
 #
 
-provider "aws" {
-  region = "${var.region}"
-  profile = "${var.aws_profile}"
-}
+#provider "aws" {
+#  region = "${var.region}"
+#  profile = "${var.aws_profile}"
+#}
+
+provider "aws" {}
 
 # Using these data sources allows the configuration to be
 # generic for any region.
