@@ -36,12 +36,3 @@ resource "aws_security_group_rule" "demo-node-ingress-cluster" {
   type                     = "ingress"
 }
 
-resource "aws_security_group_rule" "demo-node-ingress-ssh" {
-  description       = "Allow ssh-access to nodes"
-  from_port         = 22
-  protocol          = "tcp"
-  security_group_id = aws_security_group.demo-node.id
-  cidr_blocks       = ["89.1.172.182/32"]
-  to_port           = 22
-  type              = "ingress"
-}
