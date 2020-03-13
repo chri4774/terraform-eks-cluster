@@ -3,7 +3,7 @@ resource "aws_elb" "this" {
   name               = "cselb"
   #availability_zones = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
   subnets = aws_subnet.demo[*].id
-  security_groups = [ aws_security_group.elb_access.id ]
+  security_groups = [ aws_security_group.elb_access.id, aws_security_group.demo-node.id ]
 
   listener {
     instance_port     = 80
@@ -12,6 +12,14 @@ resource "aws_elb" "this" {
     lb_protocol       = "http"
   }
 
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "TCP:80"
+    interval            = 30
+  }
+  
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
@@ -53,6 +61,17 @@ resource "aws_security_group_rule" "cs_eks_vpc_demo_ingress_http" {
   to_port                  = 80
   type                     = "ingress"
 }
+
+resource "aws_security_group_rule" "cs_eks_vpc_demo-node-ingress-http" {
+  description       = "Allow http-access to nodes"
+  from_port         = 80
+  protocol          = "tcp"
+  security_group_id = aws_security_group.demo-node.id
+  cidr_blocks       = [aws_vpc.demo.cidr_block]
+  to_port           = 80
+  type              = "ingress"
+}
+
 
 output "debug2" {
     value = aws_subnet.demo[*].id
