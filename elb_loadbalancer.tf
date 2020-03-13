@@ -3,6 +3,7 @@ resource "aws_elb" "this" {
   name               = "cselb"
   #availability_zones = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
   subnets = aws_subnet.demo[*].id
+  security_groups = [ aws_security_group.demo-node.id ]
 
   listener {
     instance_port     = 80
