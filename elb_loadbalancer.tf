@@ -3,7 +3,7 @@ resource "aws_elb" "this" {
   name               = "cselb"
   #availability_zones = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
   subnets = aws_subnet.demo[*].id
-  security_groups = [ aws_security_group.demo-node.id ]
+  security_groups = [ aws_security_group.elb_access.id ]
 
   listener {
     instance_port     = 80
@@ -27,12 +27,28 @@ resource "aws_autoscaling_attachment" "cs_eks_asg_attachment" {
   elb                    = aws_elb.this.id
 }
 
+resource "aws_security_group" "elb_access" {
+  name        = "elb_access"
+  description = "Security group for elb_access from internet"
+  vpc_id      = aws_vpc.demo.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    "Name" = "${var.cluster-name}-elb_access"
+  }
+}
+
 resource "aws_security_group_rule" "cs_eks_vpc_demo_ingress_http" {
   description              = "Allow http-access to nodes"
   from_port                = 80
   protocol                 = "tcp"
-  security_group_id        = aws_security_group.demo-node.id
-  #cidr_blocks              = [aws_vpc.demo.cidr_block]
+  security_group_id        = aws_security_group.elb_access.id
   cidr_blocks              = ["0.0.0.0/0"]
   to_port                  = 80
   type                     = "ingress"
